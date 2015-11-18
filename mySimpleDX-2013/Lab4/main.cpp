@@ -26,9 +26,10 @@ LPDIRECT3D9 lpD3D = NULL; //Obiekt D3D
 LPDIRECT3DDEVICE9 lpD3DDevice = NULL; // Urzadzenie D3D
 
 // Struktura wierzcholka zawierajaca jedynie pozycje oraz kolor
-struct PlaneVert{
+struct PlaneVert {
 
 	D3DXVECTOR4 pos; // Pozycja 3d zapisana w postaci wektora 4D
+	D3DXVECTOR4 color;
 };
 
 LPDIRECT3DVERTEXBUFFER9		m_ptrVertexBuffer; // Bufor wierzcholkow
@@ -114,7 +115,7 @@ int Render()
 {
 	// Czyscimy caly ekran, aby nie pozostaly zadne smieci po poprzedniej klatce. Czyscimy tez z-bufor
 	if (lpD3DDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
-		D3DCOLOR_COLORVALUE(0.35f, 0.53f, 0.7, 1.0f), 1.0f, 0) != D3D_OK){
+		D3DCOLOR_COLORVALUE(0.35f, 0.53f, 0.7, 1.0f), 1.0f, 0) != D3D_OK) {
 		// Jezeli nie udalo sie wyczyscic ekranu to wyswietlamy blad
 		MessageBox(0, L"Error while clearing device - will exit", L"Error", 0);
 
@@ -149,7 +150,7 @@ int Render()
 
 
 	lpD3DDevice->SetStreamSource(0, m_ptrVertexBuffer, 0, sizeof(PlaneVert));
-	lpD3DDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, numVert-2);
+	lpD3DDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, numVert - 2);
 
 	lpD3DDevice->EndScene(); //konczymy scene. Po tym wywolaniu nie wolno juz nic renderowac
 	lpD3DDevice->Present(0, 0, 0, 0); //Wyswietlamy na ekranie to co wyrenderowalismy do backbufora
@@ -161,14 +162,14 @@ int Render()
 //////////////////////////////////////////////////////////////////////////
 //	Update logiki
 //////////////////////////////////////////////////////////////////////////
-void Update(){
+void Update() {
 
 
 	D3DXMATRIX matTrans;
 	D3DXMATRIX matRot;
 	D3DXMATRIX matScale;
 	++m_iTimer;
-	D3DXMatrixTranslation(&matTrans, 0, 0, 10);
+	D3DXMatrixTranslation(&matTrans, m_vTranslation.x, m_vTranslation.y, m_vTranslation.z);
 	D3DXMatrixRotationYawPitchRoll(&matRot, (float)m_iTimer / 100, 0, 0);
 	D3DXMatrixScaling(&matScale, 4, 4, 4);
 	m_matWorld = matScale*matRot*matTrans;
@@ -185,7 +186,7 @@ bool InitDx(HWND hWnd)
 	//Tworzymy obiekt D3D
 	lpD3D = Direct3DCreate9(D3D_SDK_VERSION);
 
-	if (!lpD3D){
+	if (!lpD3D) {
 		// Jesli sie nie udalo to wyswietlamy blad
 		MessageBox(0, L"D3D object initialization error - no DirectX runtime?", L"Error", 0);
 		return false;
@@ -202,13 +203,13 @@ bool InitDx(HWND hWnd)
 
 	// Probujemy stworzyc urzadzenie DirectX. W zaleznosci od mozliwosci karty graficznej mozemy nie moc stworzyc niektorych 
 	// konfiguracji urzadzenia. Probujemy zatem od najlepszej do najgorszej konfiguracji
-	if (lpD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &pp, &lpD3DDevice) != D3D_OK){
+	if (lpD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &pp, &lpD3DDevice) != D3D_OK) {
 		MessageBox(0, L"Error while creating device (hardware vertex processing) - attempting to create software device", L"Error", 0);
 
-		if (lpD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &pp, &lpD3DDevice) != D3D_OK){
+		if (lpD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &pp, &lpD3DDevice) != D3D_OK) {
 			MessageBox(0, L"Error while creating  device (software vertex processing) - attempting to create reference device", L"Error", 0);
 
-			if (lpD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_REF, hWnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &pp, &lpD3DDevice) != D3D_OK){
+			if (lpD3D->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_REF, hWnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &pp, &lpD3DDevice) != D3D_OK) {
 				MessageBox(0, L"Error while creating REF device  - exiting", L"Error", 0);
 				return false;
 			}
@@ -309,7 +310,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ShowWindow(hWnd, nCmdShow);	//Wyswietlamy okno
 	UpdateWindow(hWnd);
 	// Jesli nie uda sie zainicjowac DirectX to wychodzimy z programu
-	if (!InitDx(hWnd)){
+	if (!InitDx(hWnd)) {
 		return(0);
 	}
 	// Petla wiadomosci
@@ -326,7 +327,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		else // Jesli nie ma wiadomosci
 		{
 			Update();
-			if (!Render()){ // Probujemy renderowac. Ale jesli sie nie uda
+			if (!Render()) { // Probujemy renderowac. Ale jesli sie nie uda
 				DelDx(); // to usuwamy zasoby
 				return 0; // i wychodzimy z programu
 			}
@@ -354,7 +355,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 	case WM_KEYDOWN: // Wcisniecie klawisza
 
-		switch (wParam){
+		switch (wParam) {
 
 		case VK_UP:
 			m_vTranslation.y += 0.1;
@@ -367,7 +368,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			break;
 		case VK_LEFT:
 			m_vTranslation.x -= 0.1;
-		
+
 			break;
 		case VK_SPACE:
 			break;
