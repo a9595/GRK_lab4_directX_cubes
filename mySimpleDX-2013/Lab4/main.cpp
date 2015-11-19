@@ -33,7 +33,7 @@ struct PlaneVert {
 };
 
 LPDIRECT3DVERTEXBUFFER9		m_ptrVertexBuffer; // Bufor wierzcholkow
-int numVert = 3; // Liczba wierzcholkow
+int numVert = 4; // Liczba wierzcholkow
 
 LPDIRECT3DVERTEXDECLARATION9	m_pVertexDeclaration; // Deklaracja wierzcholkow. W niej podajemy z czego sklada sie struktura wierzcholka
 
@@ -66,6 +66,7 @@ bool InitEffect()
 	D3DVERTEXELEMENT9 decl[] =
 	{
 		{ 0, 0, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },
+		{ 0, 16,  D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT,  D3DDECLUSAGE_COLOR, 0 },
 		D3DDECL_END()
 	};
 
@@ -227,10 +228,36 @@ bool InitDx(HWND hWnd)
 	m_ptrVertexBuffer->Lock(0, numVert * sizeof(PlaneVert),
 		(void**)&pVertices, D3DLOCK_DISCARD);
 
-
+/*
 	pVertices[0].pos = D3DXVECTOR4(-0.5, -0.5, 0, 1);
 	pVertices[1].pos = D3DXVECTOR4(0.5, -0.5, 0, 1);
 	pVertices[2].pos = D3DXVECTOR4(0, 0.5, 0, 1);
+	
+	pVertices[0].color = D3DXVECTOR4(50, 100, 100, 1);
+	pVertices[1].color = D3DXVECTOR4(50, 100, 100, 1);
+	pVertices[2].color = D3DXVECTOR4(50, 100, 100, 1);
+*/
+
+
+	pVertices[0].pos = D3DXVECTOR4(-0.5f, 0.5f, -0.5f, 1.0f);
+	pVertices[0].color = D3DXVECTOR4(0.97f, 0.97f, 1.0f, 1.0f);
+	pVertices[1].pos = D3DXVECTOR4(0.5f, 0.5f, -0.5f, 1.0f);
+	pVertices[1].color = D3DXVECTOR4(1.0f, 0.854f, 0.725f, 1.0f);
+	pVertices[2].pos = D3DXVECTOR4(-0.5f, -0.5f, -0.5f, 1.0f);
+	pVertices[2].color = D3DXVECTOR4(0.9411f, 1.0f, 0.9411f, 1.0f);
+	pVertices[3].pos = D3DXVECTOR4(0.5f, -0.5f, -0.5f, 1.0f);
+	pVertices[3].color = D3DXVECTOR4(0.1176f, 0.5647f, 1.0f, 1.0f);
+	pVertices[4].pos = D3DXVECTOR4(-0.5f, 0.5f, 0.5f, 1.0f);
+	pVertices[4].color = D3DXVECTOR4(1.0f, 0.8941f, 0.8823f, 1.0f);
+	pVertices[5].pos = D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.0f);
+	pVertices[5].color = D3DXVECTOR4(0.933f, 0.9098f, 0.667f, 1.0f);
+	pVertices[6].pos = D3DXVECTOR4(-0.5f, -0.5f, 0.5f, 1.0f);
+	pVertices[6].color = D3DXVECTOR4(0.9804f, 0.5019f, 0.447f, 1.0f);
+	pVertices[7].pos = D3DXVECTOR4(0.5f, -0.5f, 0.5f, 1.0f);
+	pVertices[7].color = D3DXVECTOR4(0.3294f, 1.0f, 0.6235f, 1.0f);
+
+
+
 
 	m_ptrVertexBuffer->Unlock();
 
