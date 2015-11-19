@@ -217,6 +217,10 @@ bool InitDx(HWND hWnd)
 
 		}
 	}
+	//Inicializacja macierzy
+	D3DXMatrixIdentity(&m_matWorld);
+	D3DXMatrixLookAtLH(&m_matView, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 10), &D3DXVECTOR3(0, 1, 0));
+	D3DXMatrixPerspectiveFovLH(&m_matProj, D3DX_PI / 4, 800 / 600, 1, 1400);
 
 	lpD3DDevice->CreateVertexBuffer(numVert * sizeof(PlaneVert),
 		D3DUSAGE_DYNAMIC,
@@ -238,11 +242,42 @@ bool InitDx(HWND hWnd)
 	pVertices[2].color = D3DXVECTOR4(50, 100, 100, 1);
 */
 
+	float firstColor = 1.0f;
+
+	D3DXVECTOR4 yelowColor = D3DXVECTOR4(1.0f, 1.0f, 0, 1.0f);
+	D3DXVECTOR4 blueColor = D3DXVECTOR4(.0f, .0f, 1.0f, 1.0f);
+	D3DXVECTOR4 redColor = D3DXVECTOR4(1.0f, .0f, 0, 1.0f);
+	D3DXVECTOR4 greenColor = D3DXVECTOR4(.0f, 1.0f, 0, 1.0f);
+	//D3DXVECTOR4 yelowColor = D3DXVECTOR4(1.0f, 1.0f, 0, 1.0f);
 
 	pVertices[0].pos = D3DXVECTOR4(-0.5f, 0.5f, -0.5f, 1.0f);
-	pVertices[0].color = D3DXVECTOR4(0.97f, 0.97f, 1.0f, 1.0f);
+	pVertices[0].color = blueColor;
 	pVertices[1].pos = D3DXVECTOR4(0.5f, 0.5f, -0.5f, 1.0f);
-	pVertices[1].color = D3DXVECTOR4(1.0f, 0.854f, 0.725f, 1.0f);
+	pVertices[1].color = greenColor;
+	pVertices[2].pos = D3DXVECTOR4(-0.5f, -0.5f, -0.5f, 1.0f);
+	pVertices[2].color = redColor;
+	pVertices[3].pos = D3DXVECTOR4(0.5f, -0.5f, -0.5f, 1.0f);
+	pVertices[3].color = yelowColor;
+	pVertices[4].pos = D3DXVECTOR4(-0.5f, 0.5f, 0.5f, 1.0f);
+	pVertices[4].color = redColor;
+	pVertices[5].pos = D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.0f);
+	pVertices[5].color = redColor;
+	pVertices[6].pos = D3DXVECTOR4(-0.5f, -0.5f, 0.5f, 1.0f);
+	pVertices[6].color = yelowColor;
+	pVertices[7].pos = D3DXVECTOR4(0.5f, -0.5f, 0.5f, 1.0f);
+	pVertices[7].color = yelowColor;
+
+
+	
+
+
+	
+
+	//AIRPLANE
+	/*pVertices[0].pos = D3DXVECTOR4(1.0f, 0.5f, -0.5f, 1.0f);
+	pVertices[0].color = D3DXVECTOR4(0.0f, 0.97f, 1.0f, 1.0f);
+	pVertices[1].pos = D3DXVECTOR4(0.5f, 0.5f, -0.5f, 1.0f);
+	pVertices[1].color = D3DXVECTOR4(1.0f, 1.0, 0.725f, 1.0f);
 	pVertices[2].pos = D3DXVECTOR4(-0.5f, -0.5f, -0.5f, 1.0f);
 	pVertices[2].color = D3DXVECTOR4(0.9411f, 1.0f, 0.9411f, 1.0f);
 	pVertices[3].pos = D3DXVECTOR4(0.5f, -0.5f, -0.5f, 1.0f);
@@ -252,21 +287,9 @@ bool InitDx(HWND hWnd)
 	pVertices[5].pos = D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.0f);
 	pVertices[5].color = D3DXVECTOR4(0.933f, 0.9098f, 0.667f, 1.0f);
 	pVertices[6].pos = D3DXVECTOR4(-0.5f, -0.5f, 0.5f, 1.0f);
-	pVertices[6].color = D3DXVECTOR4(0.9804f, 0.5019f, 0.447f, 1.0f);
-	pVertices[7].pos = D3DXVECTOR4(0.5f, -0.5f, 0.5f, 1.0f);
-	pVertices[7].color = D3DXVECTOR4(0.3294f, 1.0f, 0.6235f, 1.0f);
-
-
-
-
-	m_ptrVertexBuffer->Unlock();
-
-
-
-	//Inicializacja macierzy
-	D3DXMatrixIdentity(&m_matWorld);
-	D3DXMatrixLookAtLH(&m_matView, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 10), &D3DXVECTOR3(0, 1, 0));
-	D3DXMatrixPerspectiveFovLH(&m_matProj, D3DX_PI / 4, 800 / 600, 1, 1400);
+	pVertices[6].color = D3DXVECTOR4(1.0f, 0.5019f, 0.447f, 1.0f);
+	pVertices[7].pos = D3DXVECTOR4(1, 1, 1, 1);
+	pVertices[7].color = D3DXVECTOR4(0.3294f, 1.0f, 0.6235f, 1.0f);*/
 
 	//lpD3DDevice->SetStreamSource(0, m_ptrVertexBuffer, 0, sizeof(PlaneVert));
 
